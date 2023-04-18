@@ -14,8 +14,8 @@ def cleanData(data):
                 index = SPORTS_SITE_PROPERTIES.index(key)
                 cleanSport[SPORTS_DB_PROPERTIES[index]] = sport[key]
                 
-        # print("In loop, n°" + str(i))
-        # print(cleanSport)
+        print(f"In loop, n°{i}")
+        print(cleanSport)
         cleanSports.append(cleanSport)
     
     
@@ -23,7 +23,9 @@ def cleanData(data):
 
 def dictToSequence(data):
     return [tuple(dict.values()) for dict in data]
-        
+
+def listToSequence(data):
+    return [(val,) for val in data]
 
 def dbConfig():
     return {

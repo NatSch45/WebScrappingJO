@@ -29,7 +29,7 @@ def insertEditions():
     for i in range(0, len(jsonObject['itemListElement'])):
         all_url.append(jsonObject['itemListElement'][i]['url'])
     
-    print(all_url)
+    print(all_url[0])
 
 
 #     #* Saving to a file
