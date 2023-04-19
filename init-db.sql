@@ -27,6 +27,11 @@ CREATE TABLE edition (
 	season VARCHAR(255),
 	name VARCHAR(255),
 	map jsonb,
+	date VARCHAR(255),
+	country VARCHAR(255),
+	athletes int,
+	teams int,
+	events int,
 	CONSTRAINT fk_season
 		FOREIGN KEY (season)
 			REFERENCES season(id)
