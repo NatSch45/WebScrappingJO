@@ -54,3 +54,26 @@ def insertData(query, data):
     finally:
         if conn is not None:
             conn.close()
+
+def selectData(query):
+    conn = None
+    try:
+        # Read db configuration
+        params =  dbConfig()
+        # Connect to the PostgreSQL db
+        conn = psycopg2.connect(**params)
+        # Create a new cursor
+        cur = conn.cursor()
+        # Execute the select statement
+        cur.execute(query)
+        # Fetch the result
+        result = cur.fetchall()
+        # Close communication with the db
+        cur.close()
+        # Return the result
+        return result
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
