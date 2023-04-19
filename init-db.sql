@@ -23,7 +23,7 @@ CREATE TABLE season (
 );
 
 CREATE TABLE edition (
-	id VARCHAR(255) PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	season VARCHAR(255),
 	name VARCHAR(255),
 	map jsonb,
@@ -34,7 +34,7 @@ CREATE TABLE edition (
 
 CREATE TABLE sport_in_edition (
 	id_sport VARCHAR(255),
-	id_edition VARCHAR(255),
+	id_edition SERIAL,
 	PRIMARY KEY (id_sport, id_edition),
 	CONSTRAINT fk_rel_sport_of_edition
 		FOREIGN KEY (id_sport)
