@@ -23,7 +23,7 @@ CREATE TABLE season (
 );
 
 CREATE TABLE edition (
-	id VARCHAR(255) PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	season VARCHAR(255),
 	name VARCHAR(255),
 	map jsonb,
