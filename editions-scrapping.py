@@ -1,7 +1,7 @@
 # Fichier de webscrapping des données du site avec les infos du JO : https://olympics.com/fr/
 import urllib
-import urllib.request
 from bs4 import BeautifulSoup
+import urllib.request as urlreq
 import json
 import time
 import random
@@ -10,14 +10,16 @@ from scrapping import *
 #* Constants
 URL_EDITIONS = 'https://olympics.com/en/olympic-games'
 OUTPUT_FILE = './output.json'
-TIME_TO_SLEEP = 0.5
+TIME_TO_SLEEP = 1
 
 def insertEditions():
 
     #* Scrapping
+    req = urlreq.Request(URL_EDITIONS)
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36')
 
     soup = BeautifulSoup(
-        urllib.request.urlopen(URL_EDITIONS), "lxml"
+        urlreq.urlopen(req), "lxml"
     )
     # Récupère les données avec les liens pour chaque editions
     editionDivs = soup.find('head').find('script', {"type": "application/ld+json"})
@@ -36,8 +38,11 @@ def insertEditions():
         # Initialisation du dictionnaire pour les données
         cleanEdition = {}
         # Récupération de la soupe de l'url précis
+        req = urlreq.Request(url)
+        req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36')
+
         editionSoup = BeautifulSoup(
-            urllib.request.urlopen(url), "lxml"
+            urlreq.urlopen(req), "lxml"
         )
         # Création d'une liste avec tous les composants html contenant les données à récupérer
         editionData = editionSoup.find(id="__next").find("section", {"class": "styles__Facts-sc-1w4me2-0 gcTVvL"}).contents
