@@ -9,7 +9,7 @@ from scrapping import *
 
 #* Constants
 OUTPUT_FILE = './output.json'
-TIME_TO_SLEEP = 2
+TIME_TO_SLEEP = 0.5
 
 # index = 1
 
@@ -57,7 +57,7 @@ def getEvents(edition, sport):
             # global index
             # eventData["id"] = index
             eventData["name"] = name
-            eventData["sport"] = sport
+            eventData["sport"] = f"discipline-{sport}"
             # index += 1
             result.append(eventData)
         return result
