@@ -5,10 +5,6 @@ from bs4 import BeautifulSoup
 import json
 from scrapping import *
 
-#* Constants
-URL_EDITIONS = 'https://olympics.com/en/olympic-games'
-OUTPUT_FILE = './output.json'
-
 def insertEditions():
 
     #* Scrapping

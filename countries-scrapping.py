@@ -8,11 +8,6 @@ import random
 
 from scrapping import *
 
-#* Constants
-URL_EDITIONS = 'https://olympics.com/en/olympic-games'
-OUTPUT_FILE = './output.json'
-TIME_DELAY = 1 # second(s)
-
 def insertCountries():
 
     #* Scrapping
@@ -22,7 +17,6 @@ def insertCountries():
     )
     # Récupère les données avec les liens pour chaque editions
     editionDivs = soup.find('head').find('script', {"type": "application/ld+json"})
-    # print(editionDivs.text)
 
     jsonObject = json.loads(editionDivs.text)
     # print(jsonObject['itemListElement'][0]['url'])

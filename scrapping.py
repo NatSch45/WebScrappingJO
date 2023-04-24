@@ -1,25 +1,6 @@
 import psycopg2
 import os
-
-SPORTS_SITE_PROPERTIES = ['id', 'name', 'url', 'odfCode', 'pictogram']
-SPORTS_DB_PROPERTIES = ['id', 'name', 'url', 'odf_code', 'pictogram']
-
-def cleanData(data):
-    cleanSports = []
-    
-    for i, sport in enumerate(data):
-        cleanSport = {}
-        for key in sport:
-            if key in SPORTS_SITE_PROPERTIES:
-                index = SPORTS_SITE_PROPERTIES.index(key)
-                cleanSport[SPORTS_DB_PROPERTIES[index]] = sport[key]
-                
-        print(f"In loop, n°{i}")
-        print(cleanSport)
-        cleanSports.append(cleanSport)
-    
-    
-    return cleanSports
+from commons import *
 
 def dictToSequence(data):
     return [tuple(dict.values()) for dict in data]
