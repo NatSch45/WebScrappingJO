@@ -23,6 +23,7 @@ def dbConfig():
 def prepareRequest(URL):
     req = urlreq.Request(URL)
     req.add_header('User-Agent', os.getenv('USER_AGENT'))
+    return req
 
 def insertData(query, data):
     conn = None

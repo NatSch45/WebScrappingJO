@@ -12,8 +12,6 @@ from DAO.requests import *
 OUTPUT_FILE = './events.json'
 TIME_TO_SLEEP = 0.5
 
-# index = 1
-
 def getEvents(edition, sport):
     eventURL = f"https://olympics.com/en/olympic-games/{edition}/results/{sport}"
 
@@ -32,11 +30,8 @@ def getEvents(edition, sport):
         for div in eventsDiv:
             eventData = {}
             name = div.find("h2").text.lower()
-            # global index
-            # eventData["id"] = index
             eventData["name"] = name
             eventData["sport"] = f"discipline-{sport}"
-            # index += 1
             result.append(eventData)
         return result
 
