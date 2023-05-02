@@ -6,7 +6,6 @@ import json
 import time
 import random
 from scrapping import *
-from DAO.requests import *
 
 #* Constants
 OUTPUT_FILE = './events.json'

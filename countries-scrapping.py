@@ -1,7 +1,4 @@
 # Fichier de webscrapping des données du site avec les infos du JO : https://olympics.com/fr/
-import urllib
-import urllib.request
-from bs4 import BeautifulSoup
 import json
 import time
 import random
@@ -12,14 +9,14 @@ def insertCountries():
 
     #* Scrapping
     
-    req = prepareRequest(URL_SPORTS)
-
+    req = prepareRequest(URL_EDITIONS)
+    
     soup = BeautifulSoup(
         urlreq.urlopen(req), "lxml"
     )
     # Récupère les données avec les liens pour chaque editions
     editionDivs = soup.find('head').find('script', {"type": "application/ld+json"})
-
+    
     jsonObject = json.loads(editionDivs.text)
     # print(jsonObject['itemListElement'][0]['url'])
     # print(len(jsonObject['itemListElement']))
@@ -29,16 +26,13 @@ def insertCountries():
 
     for i in range(0, len(jsonObject['itemListElement'])):
         allUrl.append(jsonObject['itemListElement'][i]['url'].replace(".com/", ".com/en/"))
-        
-    for i in range(10):
-        print(f"Iteration n°{i}, DELAY: {TIME_DELAY + random.randint(0, 10)/10}")
-        # time.sleep(TIME_DELAY + random.randint(0, 10)/10)
-    
-    print(allUrl)
+
     
     for i, url in enumerate(allUrl[4:]): # Remove all editions that have not yet taken place (from athens-1896 to beijing-2022)
+        req = prepareRequest(f"{url}/medals")
+        
         editionSoup = BeautifulSoup(
-            urllib.request.urlopen(f"{url}/medals"), "lxml"
+            urlreq.urlopen(req), "lxml"
         )
     
         tableContent = editionSoup.find(id="__next").find("div", {"data-cy": "table-content"})

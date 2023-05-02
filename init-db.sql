@@ -9,7 +9,7 @@ CREATE TABLE sport (
 );
 
 CREATE TABLE event (
-	id bigint PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(255),
 	sport VARCHAR(255),
 	CONSTRAINT fk_sport
@@ -39,7 +39,7 @@ CREATE TABLE edition (
 
 CREATE TABLE sport_in_edition (
 	id_sport VARCHAR(255),
-	id_edition SERIAL,
+	id_edition int,
 	PRIMARY KEY (id_sport, id_edition),
 	CONSTRAINT fk_rel_sport_of_edition
 		FOREIGN KEY (id_sport)
@@ -67,7 +67,7 @@ CREATE TABLE country (
 );
 
 CREATE TABLE medals (
-	id_edition VARCHAR(255),
+	id_edition int,
 	id_country int,
 	gold_medals int,
 	silver_medals int,
@@ -79,4 +79,21 @@ CREATE TABLE medals (
 	CONSTRAINT fk_medals_country
 		FOREIGN KEY (id_country)
 			REFERENCES country(id)
+);
+
+CREATE TABLE events_results (
+	rank VARCHAR(255),
+	team VARCHAR(255),
+	participant VARCHAR(255),
+	results VARCHAR(255),
+	notes VARCHAR(255),
+	id_event int,
+	id_edition int,
+	PRIMARY KEY (id_event, id_edition),
+	CONSTRAINT fk_events_results_event
+		FOREIGN KEY (id_event)
+			REFERENCES event(id),
+	CONSTRAINT fk_events_results_edition
+		FOREIGN KEY (id_edition)
+			REFERENCES edition(id)
 );
