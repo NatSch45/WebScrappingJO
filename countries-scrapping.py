@@ -11,9 +11,11 @@ from scrapping import *
 def insertCountries():
 
     #* Scrapping
+    
+    req = prepareRequest(URL_SPORTS)
 
     soup = BeautifulSoup(
-        urllib.request.urlopen(URL_EDITIONS), "lxml"
+        urlreq.urlopen(req), "lxml"
     )
     # Récupère les données avec les liens pour chaque editions
     editionDivs = soup.find('head').find('script', {"type": "application/ld+json"})

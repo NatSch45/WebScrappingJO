@@ -1,6 +1,4 @@
 # Fichier de webscrapping des données du site avec les infos du JO : https://olympics.com/fr/
-import urllib.request as urlreq
-from bs4 import BeautifulSoup
 import json
 from scrapping import *
 
@@ -24,8 +22,7 @@ def insertSports():
 
     #* Scrapping
 
-    req = urlreq.Request(URL_SPORTS)
-    req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0')
+    req = prepareRequest(URL_SPORTS)
 
     soup = BeautifulSoup(
         urlreq.urlopen(req), "lxml"
@@ -47,4 +44,4 @@ def insertSports():
     #* Insert data to DB
     insertData("INSERT INTO sport(id, name, url, odf_code, pictogram) VALUES(%s, %s, %s, %s, %s)", dictToSequence(cleanSports))
     
-insertSports()
+# insertSports()

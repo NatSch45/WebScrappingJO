@@ -1,5 +1,8 @@
 import psycopg2
 import os
+import urllib.request as urlreq
+from bs4 import BeautifulSoup
+
 from commons import *
 
 def dictToSequence(data):
@@ -16,6 +19,10 @@ def dbConfig():
         'password': os.environ.get('DBJO_PWD') or 'postgres',
         'port': os.environ.get('DBJO_PORT') or 5432
     }
+    
+def prepareRequest(URL):
+    req = urlreq.Request(URL)
+    req.add_header('User-Agent', os.getenv('USER_AGENT'))
 
 def insertData(query, data):
     conn = None
