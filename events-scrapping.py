@@ -6,6 +6,7 @@ import json
 import time
 import random
 from scrapping import *
+from DAO.requests import *
 
 #* Constants
 OUTPUT_FILE = './events.json'
@@ -13,36 +14,13 @@ TIME_TO_SLEEP = 0.5
 
 # index = 1
 
-def getEditionsForURL():
-
-    listOfEdtions = []
-    # Get editions from database
-
-    editions = selectData("SELECT name FROM edition")
-    for edition in editions:
-        listOfEdtions.append(edition[0].replace(' ', '-').lower())
-
-    return listOfEdtions
-
-def getSportsForURL():
-    listOfSports = []
-    # Get sports from database
-
-    sports = selectData("SELECT name FROM sport")
-    for sport in sports:
-        listOfSports.append(sport[0].replace(' ', '-').lower())
-
-    return listOfSports
-
-
 def getEvents(edition, sport):
     eventURL = f"https://olympics.com/en/olympic-games/{edition}/results/{sport}"
 
     result = []
     # Scrapping
     try:
-        req = urlreq.Request(eventURL)
-        req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36')
+        req = prepareRequest(eventURL)
 
         soup = BeautifulSoup(
             urlreq.urlopen(req), "lxml"

@@ -60,3 +60,23 @@ CREATE TABLE sport_in_season (
 		FOREIGN KEY (id_season)
 			REFERENCES season(id)
 );
+
+CREATE TABLE country (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255)
+);
+
+CREATE TABLE medals (
+	id_edition VARCHAR(255),
+	id_country int,
+	gold_medals int,
+	silver_medals int,
+	bronze_medals int,
+	PRIMARY KEY (id_edition, id_country),
+	CONSTRAINT fk_medals_edition
+		FOREIGN KEY (id_edition)
+			REFERENCES edition(id),
+	CONSTRAINT fk_medals_country
+		FOREIGN KEY (id_country)
+			REFERENCES country(id)
+);

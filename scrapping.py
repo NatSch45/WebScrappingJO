@@ -1,29 +1,15 @@
 import psycopg2
 import os
+import urllib.request as urlreq
+from bs4 import BeautifulSoup
 
-SPORTS_SITE_PROPERTIES = ['id', 'name', 'url', 'odfCode', 'pictogram']
-SPORTS_DB_PROPERTIES = ['id', 'name', 'url', 'odf_code', 'pictogram']
-
-def cleanData(data):
-    cleanSports = []
-    
-    for i, sport in enumerate(data):
-        cleanSport = {}
-        for key in sport:
-            if key in SPORTS_SITE_PROPERTIES:
-                index = SPORTS_SITE_PROPERTIES.index(key)
-                cleanSport[SPORTS_DB_PROPERTIES[index]] = sport[key]
-                
-        # print("In loop, n°" + str(i))
-        # print(cleanSport)
-        cleanSports.append(cleanSport)
-    
-    
-    return cleanSports
+from commons import *
 
 def dictToSequence(data):
     return [tuple(dict.values()) for dict in data]
-        
+
+def listToSequence(data):
+    return [(val,) for val in data]
 
 def dbConfig():
     return {
@@ -33,6 +19,10 @@ def dbConfig():
         'password': os.environ.get('DBJO_PWD') or 'postgres',
         'port': os.environ.get('DBJO_PORT') or 5432
     }
+    
+def prepareRequest(URL):
+    req = urlreq.Request(URL)
+    req.add_header('User-Agent', os.getenv('USER_AGENT'))
 
 def insertData(query, data):
     conn = None

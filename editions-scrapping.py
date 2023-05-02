@@ -7,16 +7,11 @@ import time
 import random
 from scrapping import *
 
-#* Constants
-URL_EDITIONS = 'https://olympics.com/en/olympic-games'
-OUTPUT_FILE = './output.json'
-TIME_TO_SLEEP = 1
-
 def insertEditions():
 
     #* Scrapping
-    req = urlreq.Request(URL_EDITIONS)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36')
+    
+    req = prepareRequest(URL_EDITIONS)
 
     soup = BeautifulSoup(
         urlreq.urlopen(req), "lxml"
@@ -66,7 +61,7 @@ def insertEditions():
         print(f"Les données de {url} ont été récupérées >> {(all_url.index(url) / len(all_url))*100}%")
         
         # sleep d'une druée aléatoire pour ne pas attaquer toutes les URL d'un coup
-        time.sleep(random.uniform(TIME_TO_SLEEP/2, TIME_TO_SLEEP*1.5))
+        time.sleep(random.uniform(TIME_DELAY/2, TIME_DELAY*1.5))
 
     #* Saving to a file
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
