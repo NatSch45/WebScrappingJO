@@ -40,12 +40,12 @@ def getEvents(edition, sport):
     finally:
         return result
 
-def insertEvents(editions):
+def insertEvents(events):
     # Ajout des index pour chaque event
-    for i in range(0, len(editions)):
-        editions[i]["id"] = i+1
-    print(f"Les index ont été ajoutés pour les {len(editions)} évenements")
-    insertData("INSERT INTO event(name, sport, id) VALUES(%s, %s, %s)", dictToSequence(editions))
+    for i in range(0, len(events)):
+        events[i]["id"] = i+1
+    print(f"Les index ont été ajoutés pour les {len(events)} évenements")
+    insertData("INSERT INTO event(name, sport, id) VALUES(%s, %s, %s)", dictToSequence(events))
     print(f"Les données ont été insérées en base.")
 
 def readJSON():
@@ -73,7 +73,7 @@ def run():
             for i in range(0, len(edtionsInUrl) -1):
                 for j in range(0, len(sportsInUrl) -1):
                     # eventList.append(data for data in getEvents(edtionsInUrl[i], sportsInUrl[j]))
-                    events = getEvents(edtionsInUrl[i], sportsInUrl[j])
+                    events = getEvents(edtionsInUrl[i][1], sportsInUrl[j])
 
                     if len(events) != 0:
                         for data in events:

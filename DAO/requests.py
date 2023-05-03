@@ -5,9 +5,9 @@ def getEditionsForURL():
     listOfEdtions = []
     # Get editions from database
 
-    editions = selectData("SELECT name FROM edition")
+    editions = selectData("SELECT id, name FROM edition")
     for edition in editions:
-        listOfEdtions.append(edition[0].replace(' ', '-').replace('.', '').replace('\'', '-').lower())
+        listOfEdtions.append((edition[0], edition[1].replace(' ', '-').replace('.', '').replace('\'', '-').lower()))
 
     return listOfEdtions
 
@@ -27,6 +27,6 @@ def getEventsForURL():
     #Get events from database
     events = selectData("SELECT id, name FROM event")
     for event in events:
-        listOfEvents.append(event[1].replace(' - ', '-').replace(' -', '-').replace(' + ', '-plus-').replace(' +', '-over-').replace(' ', '-').replace('.', '-').replace('\'s', '').replace('\'', '').replace('(', '').replace(')', '').replace('(w+m)', 'women-and-men'))
+        listOfEvents.append((event[0], event[1].replace(' - ', '-').replace(' -', '-').replace(' + ', '-plus-').replace(' +', '-over-').replace(' ', '-').replace('.', '-').replace('\'s', '').replace('\'', '').replace('(', '').replace(')', '').replace('(w+m)', 'women-and-men').replace(':', '-').replace(',', '-').lower()))
 
     return listOfEvents

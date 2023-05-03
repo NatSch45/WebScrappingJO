@@ -14,7 +14,7 @@ LOG_FILE = './logs.txt'
 TIME_TO_SLEEP = 0.5
 
 def getResults(edition, sport, event):
-    url = f"https://olympics.com/en/olympic-games/{edition}/results/{sport}/{event[1]}"
+    url = f"https://olympics.com/en/olympic-games/{edition[1]}/results/{sport}/{event[1]}"
 
     result = [] # Tableau pour accueillir les résultats de l'URL scrappée
 
@@ -39,7 +39,7 @@ def getResults(edition, sport, event):
                 except:
                     resultData["Notes"] = None
                 resultData["event"] = event[0]
-                resultData["edition"] = 
+                resultData["edition"] = edition[0]
                 result.append(resultData)
         else:
             resultsDiv = soup.find('div', {"class": "Tablestyles__Wrapper-sc-xjyvs9-0"}).find_all("div", {"data-cy": "team-result-row"})
@@ -58,6 +58,8 @@ def getResults(edition, sport, event):
                     resultData["Notes"] = div.find("div", {"class": "styles__NotesInfoWrapper-sc-rh9yz9-3"}).find("span", {"data-cy", "result-info-content"}).text
                 except:
                     resultData["Notes"] = None
+                resultData["event"] = event[0]
+                resultData["edition"] = edition[0]
                 result.append(resultData)
     except:
         with open(LOG_FILE, "a", encoding="utf-8") as f:
@@ -80,5 +82,14 @@ def run():
                 for data in result:
                     if data not in resultsList:
                         resultsList.append(data)
+                time.sleep(random.uniform(TIME_TO_SLEEP/2, TIME_TO_SLEEP*1.5))
+        # Ecriture d'un log à chaque editions entierement scrappée
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"Les résultats d'une édition ont été scrappé : {edition}\n")
+    # Ecriture des données dans un fichier JSON au cas où l'insertion en base ne passe pas
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                json.dump(resultsList, f)
+    
+    insertData("INSERT INTO events_results(rank, team, participant, results, notes, id_event, id_edition) VALUES(%s, %s, %s, %s, %s, %s, %s)", dictToSequence(resultsList))
 
 print(getResults(1,1,1))
