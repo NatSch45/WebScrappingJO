@@ -80,3 +80,21 @@ CREATE TABLE medals (
 		FOREIGN KEY (id_country)
 			REFERENCES country(id)
 );
+
+
+CREATE TABLE events_results (
+	rank VARCHAR(255),
+	team VARCHAR(255),
+	athlete VARCHAR(255),
+	results VARCHAR(255),
+	notes VARCHAR(255),
+	id_event int,
+	id_edition int,
+	PRIMARY KEY (id_event, id_edition),
+	CONSTRAINT fk_event_results
+		FOREIGN KEY (id_event)
+			REFERENCES event(id),
+	CONSTRAINT fk_results_edition
+		FOREIGN KEY (id_edition)
+			REFERENCES edition(id)
+)
