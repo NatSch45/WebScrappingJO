@@ -73,14 +73,6 @@ def insertMedals():
         
         print(f"Nbr of countries of the {edition} edition : {len(countries)}")
         time.sleep(TIME_DELAY + random.randint(0, 10)/10)
-
-    #* Saving to a file
-    # with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
-    #     f.write(str(editionDivs))
-        
-    #* Clean the data to the needed properties
-    # cleanEditions = cleanData(jsonObject)
-    # print(len(cleanEditions))
     
     #* Insert data to DB
     insertData("INSERT INTO medals(id_edition, id_country, gold_medals, silver_medals, bronze_medals) VALUES(%s, %s, %s, %s, %s)", allMedals)
