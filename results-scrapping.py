@@ -8,11 +8,6 @@ import random
 from scrapping import *
 from DAO.requests import *
 
-#* Constants
-OUTPUT_FILE = './results.json'
-LOG_FILE = './logs.txt'
-TIME_TO_SLEEP = 0.5
-
 def getResults(edition, event):
     url = f"https://olympics.com/en/olympic-games/{edition[1]}/results/{event[2]}/{event[1]}"
 
@@ -86,9 +81,9 @@ def run():
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
         with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"Les résultats d'une édition ont été scrappé : {edition}   >>>  {current_time}\n")
+            f.write(f"Les résultats d'une édition ont été scrappés : {edition}   >>>  {current_time}\n")
     # Ecriture des données dans un fichier JSON au cas où l'insertion en base ne passe pas
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    with open(RESULTS_OUTPUT_FILE, "w", encoding="utf-8") as f:
                 json.dump(resultsList, f)
     
     insertData("INSERT INTO events_results(rank, team, participant, results, notes, id_event, id_edition) VALUES(%s, %s, %s, %s, %s, %s, %s)", dictToSequence(resultsList))
