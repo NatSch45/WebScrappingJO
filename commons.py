@@ -13,6 +13,7 @@ URL_EDITIONS = 'https://olympics.com/en/olympic-games'
 
 OUTPUT_FILE = './output.json'
 RESULTS_OUTPUT_FILE = './results.json'
+FINAL_RESULTS_OUTPUT_FILE = './final-results.json'
 LOG_FILE = './logs.txt'
 
 TIME_DELAY = 1 # second(s)

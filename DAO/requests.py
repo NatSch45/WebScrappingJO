@@ -30,7 +30,7 @@ def getEventsForURL():
     for event in events:
         formattedEvent = event[1].lower()
         for chars in REPLACEMENT_CHARS:
-            formattedEvent.replace(chars[0], chars[1])
+            formattedEvent = formattedEvent.replace(chars[0], chars[1])
             
         listOfEvents.append((event[0], formattedEvent, event[2].replace('discipline-', '')))
 
