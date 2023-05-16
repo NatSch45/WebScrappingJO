@@ -49,7 +49,7 @@ def getResults(edition, event):
                 resultData["Team"] = div.find("div", {"data-cy": "country-name-row-"+str(i+1)}).text
                 resultData["athlete"] = None
                 try:
-                    resultData["result"] = div.find("div", {"class": "styles__ResultInfoWrapper-sc-rh9yz9-2"}).find("span", {"data-cy": "result-info-content"})
+                    resultData["result"] = div.find("div", {"class": "styles__ResultInfoWrapper-sc-rh9yz9-2"}).find("span", {"data-cy": "result-info-content"}).text
                 except:
                     resultData["result"] = None
                 try:
@@ -59,7 +59,7 @@ def getResults(edition, event):
                 resultData["event"] = event[0]
                 resultData["edition"] = edition[0]
                 result.append(resultData)
-        print(f"Les résultats du {event[1]} > {event[2]} ont été scrappées")
+        print(f"Les résultats du {event[2]} > {event[1]} ont été scrappées")
     except:
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S", t)
@@ -87,6 +87,10 @@ def run():
         current_time = time.strftime("%H:%M:%S", t)
         with open(LOG_FILE, "a", encoding="utf-8") as f:
             f.write(f"Les résultats d'une édition ont été scrappé : {edition}   >>>  {current_time}\n")
+        # Ecriture des résultats dans un JSON tous les 5 éditions.
+        if (editions.index(edition) +1) % 5 == 0:
+            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+                json.dump(resultsList, f)
     # Ecriture des données dans un fichier JSON au cas où l'insertion en base ne passe pas
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
                 json.dump(resultsList, f)

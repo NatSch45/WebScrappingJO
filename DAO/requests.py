@@ -27,6 +27,6 @@ def getEventsForURL():
     #Get events from database
     events = selectData("SELECT * FROM event")
     for event in events:
-        listOfEvents.append((event[0], event[1].replace(' - ', '-').replace(' -', '-').replace(' + ', '-plus-').replace(' +', '-over-').replace(' ', '-').replace('.', '-').replace('\'s', '').replace('\'', '').replace('(', '').replace(')', '').replace('(w+m)', 'women-and-men').replace(':', '-').replace(',', '-').lower(), event[2].replace('discipline-', '')))
+        listOfEvents.append((event[0], event[1].replace(' - ', '-').replace(' -', '-').replace(' + ', '-plus-').replace(' +', '-over-').replace(' ', '-').replace('.', '-').replace("'s", '').replace("'", '').replace('(', '').replace(')', '').replace('(w+m)', 'women-and-men').replace(':', '-').replace(',', '-').lower(), event[2].replace('discipline-', '')))
 
     return listOfEvents
