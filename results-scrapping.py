@@ -8,11 +8,6 @@ import random
 from scrapping import *
 from DAO.requests import *
 
-#* Constants
-OUTPUT_FILE = './results.json'
-LOG_FILE = './logs.txt'
-TIME_TO_SLEEP = 0.5
-
 def getResults(edition, event):
     url = f"https://olympics.com/en/olympic-games/{edition[1]}/results/{event[2]}/{event[1]}"
 
@@ -75,25 +70,23 @@ def run():
     editions = getEditionsForURL()
     events = getEventsForURL()
 
-    for edition in editions:
-        for event in events:
-            result = getResults(edition, event)
-            for data in result:
-                if data not in resultsList:
-                    resultsList.append(data)
-            time.sleep(random.uniform(TIME_TO_SLEEP/2, TIME_TO_SLEEP*1.5))
-        # Ecriture d'un log à chaque editions entierement scrappée
-        t = time.localtime()
-        current_time = time.strftime("%H:%M:%S", t)
-        with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"Les résultats d'une édition ont été scrappé : {edition}   >>>  {current_time}\n")
-        # Ecriture des résultats dans un JSON tous les 5 éditions.
-        if (editions.index(edition) +1) % 5 == 0:
-            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                json.dump(resultsList, f)
+    with open(RESULTS_OUTPUT_FILE, "a", encoding="utf-8") as fr:
+        for edition in editions:
+            for event in events:
+                result = getResults(edition, event)
+                for data in result:
+                    if data not in resultsList:
+                        json.dump(data, fr)
+                        resultsList.append(data)
+                time.sleep(random.uniform(TIME_TO_SLEEP/2, TIME_TO_SLEEP*1.5))
+            # Ecriture d'un log à chaque editions entierement scrappée
+            t = time.localtime()
+            current_time = time.strftime("%H:%M:%S", t)
+            with open(LOG_FILE, "a", encoding="utf-8") as fl:
+                fl.write(f"Les résultats d'une édition ont été scrappés : {edition}   >>>  {current_time}\n")
     # Ecriture des données dans un fichier JSON au cas où l'insertion en base ne passe pas
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                json.dump(resultsList, f)
+    with open(FINAL_RESULTS_OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(resultsList, f)
     
     insertData("INSERT INTO events_results(rank, team, participant, results, notes, id_event, id_edition) VALUES(%s, %s, %s, %s, %s, %s, %s)", dictToSequence(resultsList))
 
