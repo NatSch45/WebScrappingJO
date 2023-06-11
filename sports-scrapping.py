@@ -1,19 +1,28 @@
 # Fichier de webscrapping des données du site avec les infos du JO : https://olympics.com/fr/
-import urllib.request as urlreq
-from bs4 import BeautifulSoup
 import json
 from scrapping import *
 
-#* Constants
-URL_SPORTS = 'https://olympics.com/en/sports/'
-OUTPUT_FILE = './output.json'
+def cleanSportData(data):
+    cleanSports = []
+    
+    for i, sport in enumerate(data):
+        cleanSport = {}
+        for key in sport:
+            if key in SPORTS_SITE_PROPERTIES:
+                index = SPORTS_SITE_PROPERTIES.index(key)
+                cleanSport[SPORTS_DB_PROPERTIES[index]] = sport[key]
+                
+        print(f"In loop, n°{i}")
+        print(cleanSport)
+        cleanSports.append(cleanSport)
+    
+    return cleanSports
 
 def insertSports():
 
     #* Scrapping
 
-    req = urlreq.Request(URL_SPORTS)
-    req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0')
+    req = prepareRequest(URL_SPORTS)
 
     soup = BeautifulSoup(
         urlreq.urlopen(req), "lxml"
@@ -29,11 +38,10 @@ def insertSports():
         f.write(str(sportDivs))
         
     #* Clean the data to the needed properties
-    cleanSports = cleanData(jsonObject)
-
-    print(len(cleanSports))
+    cleanSports = cleanSportData(jsonObject)
+    print(f"{len(cleanSports)} sports retrieved")
 
     #* Insert data to DB
     insertData("INSERT INTO sport(id, name, url, odf_code, pictogram) VALUES(%s, %s, %s, %s, %s)", dictToSequence(cleanSports))
     
-insertSports()
+# insertSports()

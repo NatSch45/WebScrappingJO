@@ -1,29 +1,15 @@
 import psycopg2
 import os
+import urllib.request as urlreq
+from bs4 import BeautifulSoup
 
-SPORTS_SITE_PROPERTIES = ['id', 'name', 'url', 'odfCode', 'pictogram']
-SPORTS_DB_PROPERTIES = ['id', 'name', 'url', 'odf_code', 'pictogram']
-
-def cleanData(data):
-    cleanSports = []
-    
-    for i, sport in enumerate(data):
-        cleanSport = {}
-        for key in sport:
-            if key in SPORTS_SITE_PROPERTIES:
-                index = SPORTS_SITE_PROPERTIES.index(key)
-                cleanSport[SPORTS_DB_PROPERTIES[index]] = sport[key]
-                
-        # print("In loop, n°" + str(i))
-        # print(cleanSport)
-        cleanSports.append(cleanSport)
-    
-    
-    return cleanSports
+from commons import *
 
 def dictToSequence(data):
     return [tuple(dict.values()) for dict in data]
-        
+
+def listToSequence(data):
+    return [(val,) for val in data]
 
 def dbConfig():
     return {
@@ -33,6 +19,11 @@ def dbConfig():
         'password': os.environ.get('DBJO_PWD') or 'postgres',
         'port': os.environ.get('DBJO_PORT') or 5432
     }
+    
+def prepareRequest(URL):
+    req = urlreq.Request(URL)
+    req.add_header('User-Agent', os.getenv('USER_AGENT'))
+    return req
 
 def insertData(query, data):
     conn = None
@@ -49,6 +40,29 @@ def insertData(query, data):
         conn.commit()
         # Close communication with the db
         cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+def selectData(query):
+    conn = None
+    try:
+        # Read db configuration
+        params =  dbConfig()
+        # Connect to the PostgreSQL db
+        conn = psycopg2.connect(**params)
+        # Create a new cursor
+        cur = conn.cursor()
+        # Execute the select statement
+        cur.execute(query)
+        # Fetch the result
+        result = cur.fetchall()
+        # Close communication with the db
+        cur.close()
+        # Return the result
+        return result
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:

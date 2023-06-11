@@ -23,7 +23,7 @@ CREATE TABLE season (
 );
 
 CREATE TABLE edition (
-	id VARCHAR(255) PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	season VARCHAR(255),
 	name VARCHAR(255),
 	map jsonb,
@@ -39,7 +39,7 @@ CREATE TABLE edition (
 
 CREATE TABLE sport_in_edition (
 	id_sport VARCHAR(255),
-	id_edition VARCHAR(255),
+	id_edition SERIAL,
 	PRIMARY KEY (id_sport, id_edition),
 	CONSTRAINT fk_rel_sport_of_edition
 		FOREIGN KEY (id_sport)
@@ -60,3 +60,35 @@ CREATE TABLE sport_in_season (
 		FOREIGN KEY (id_season)
 			REFERENCES season(id)
 );
+
+CREATE TABLE country (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255)
+);
+
+CREATE TABLE medals (
+	id_edition VARCHAR(255),
+	id_country int,
+	gold_medals int,
+	silver_medals int,
+	bronze_medals int,
+	PRIMARY KEY (id_edition, id_country),
+	CONSTRAINT fk_medals_edition
+		FOREIGN KEY (id_edition)
+			REFERENCES edition(id),
+	CONSTRAINT fk_medals_country
+		FOREIGN KEY (id_country)
+			REFERENCES country(id)
+);
+
+
+CREATE TABLE events_results (
+	id SERIAL PRIMARY KEY,
+	rank VARCHAR(255),
+	team VARCHAR(255),
+	athlete VARCHAR(255),
+	results VARCHAR(255),
+	notes VARCHAR(255),
+	id_event int,
+	id_edition int
+)
